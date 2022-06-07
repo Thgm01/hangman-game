@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-void header();
-void recive_guess();
-int have_letter(char letter);
-void draw_letters();
-void selec_word();
-int hanged();
-int win();
+#include "main.h"
 
 char secret_word[20];
 char tries[26];
