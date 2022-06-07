@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "main.h"
 
 char secret_word[20];
@@ -22,6 +23,7 @@ int main()
         recive_guess();
 
     }while(!win() && !hanged());
+
 
 }
 
@@ -88,8 +90,6 @@ void draw_letters() //draw the letter if it is in the secret word or draw an und
 {
     for(int i=0; i<strlen(secret_word); i++)
         {   
-            
-            //here
             int find = have_letter(secret_word[i]);
             
             if(find)
@@ -106,5 +106,24 @@ void draw_letters() //draw the letter if it is in the secret word or draw an und
 
 void select_word() //select a word and put in a char string
 {
-    sprintf(secret_word, "MELANCIA");
+    FILE* file = fopen("words.txt", "r"); //open a file in read mode
+    if(file == 0)
+    {
+        printf("ERROR when trying to open the file\n");
+        exit(1);
+    }
+
+    int number_of_words;
+    fscanf(file, "%d", &number_of_words);
+
+    srand(time(0));
+    int rand_num = rand() % number_of_words;
+
+    for(int i = 0; i <= rand_num; i++) //get the word and put in secret_word
+    {
+        fscanf(file, "%s", secret_word);
+    }
+
+    fclose(file); //close the file
 }
+
