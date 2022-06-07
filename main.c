@@ -24,7 +24,7 @@ int main()
 
     }while(!win() && !hanged());
 
-
+    add_word();
 }
 
 int win() //know when the user win the game
@@ -127,3 +127,37 @@ void select_word() //select a word and put in a char string
     fclose(file); //close the file
 }
 
+void add_word()
+{
+    char want;
+
+    printf("Do you want to add a new word in the game? (Y/N) ");
+    scanf(" %c", &want);    
+
+    if(want == 'Y')
+    {
+        char new_word[20];
+        printf("What's the new word? ");
+        scanf("%s", new_word);
+
+        FILE* file = fopen("words.txt", "r+");
+        if(file == 0)
+        {
+            printf("ERROR when trying to open the file\n");
+            exit(1);
+        }
+
+        int number_of_words;
+        fscanf(file, "%d", &number_of_words); 
+        number_of_words++;
+
+        fseek(file, 0, SEEK_SET);
+        fprintf(file, "%d", number_of_words);
+        
+        fseek(file, 0, SEEK_END);
+        fprintf(file, "\n%s", new_word);
+
+        fclose(file);
+    }
+    
+}

@@ -5,3 +5,4 @@ void draw_letters();
 void select_word();
 int hanged();
 int win();
+void add_word();
