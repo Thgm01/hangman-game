@@ -4,11 +4,11 @@
 #include <time.h>
 #include "main.h"
 
-char secret_word[20];
+char secret_word[WORD_SIZE];
 char tries[26];
 int attempts = 0;
 
-int main()
+void main()
 {
     select_word();
 
@@ -18,13 +18,56 @@ int main()
         system("clear");
         header();
 
+        draw_gallow();
         draw_letters();
 
         recive_guess();
 
     }while(!win() && !hanged());
 
-    add_word();
+    system("clear");
+    
+
+    if(win())
+    {
+        printf("\nCongratulations, you won!\n\n");
+
+        printf("       ___________      \n");
+        printf("      '._==_==_=_.'     \n");
+        printf("      .-\\:      /-.    \n");
+        printf("     | (|:.     |) |    \n");
+        printf("      '-|:.     |-'     \n");
+        printf("        \\::.    /      \n");
+        printf("         '::. .'        \n");
+        printf("           ) (          \n");
+        printf("         _.' '._        \n");
+        printf("        '-------'       \n\n\n");
+        add_word();
+
+    } else
+    {
+        draw_gallow();
+        printf("\nGosh, you ware hanged!\n");
+        printf("The secret word was **%s**\n\n", secret_word);
+
+        printf("    _______________         \n");
+        printf("   /               \\       \n"); 
+        printf("  /                 \\      \n");
+        printf("//                   \\/\\  \n");
+        printf("\\|   XXXX     XXXX   | /   \n");
+        printf(" |   XXXX     XXXX   |/     \n");
+        printf(" |   XXX       XXX   |      \n");
+        printf(" |                   |      \n");
+        printf(" \\__      XXX      __/     \n");
+        printf("   |\\     XXX     /|       \n");
+        printf("   | |           | |        \n");
+        printf("   | I I I I I I I |        \n");
+        printf("   |  I I I I I I  |        \n");
+        printf("   \\_             _/       \n");
+        printf("     \\_         _/         \n");
+        printf("       \\_______/           \n");
+    }
+
 }
 
 int win() //know when the user win the game
@@ -39,7 +82,7 @@ int win() //know when the user win the game
     return 1;
 }
 
-int hanged() //know when the user is hanged
+int wrong_tries()
 {
     int misses = 0;
     for(int i=0; i<attempts; i++)
@@ -55,7 +98,12 @@ int hanged() //know when the user is hanged
         }
         if(!have) misses++;
     }
-    return misses >= 5;
+    return misses;
+}
+int hanged() //know when the user is hanged
+{
+    
+    return wrong_tries() >= 6;
 }
 
 int have_letter(char letter) //verify if the user's guess has in the secret word 
@@ -86,8 +134,24 @@ void header() //print game header
     printf("************************\n\n");
 }
 
+void draw_gallow()
+{
+    int errors = wrong_tries();
+    
+    printf("  _______      \n");
+    printf(" |/      |     \n");
+    printf(" |      %s    \n", (errors >= 1 ?"(_)" : "   "));
+    printf(" |      %c%c%c  \n", (errors >= 4 ? '\\' : ' '), (errors >= 2 ? '|' : ' '), (errors >= 3 ? '/' : ' '));
+    printf(" |       %c     \n", (errors >= 2 ? '|' : ' '));
+    printf(" |      %c %c   \n",(errors >= 5 ? '/' : ' '), (errors >= 6 ? '\\' : ' '));
+    printf(" |             \n");
+    printf("_|___          \n\n\n");
+}
+
 void draw_letters() //draw the letter if it is in the secret word or draw an underscore if not 
 {
+
+
     for(int i=0; i<strlen(secret_word); i++)
         {   
             int find = have_letter(secret_word[i]);
@@ -136,7 +200,7 @@ void add_word()
 
     if(want == 'Y')
     {
-        char new_word[20];
+        char new_word[WORD_SIZE];
         printf("What's the new word? ");
         scanf("%s", new_word);
 
@@ -161,3 +225,4 @@ void add_word()
     }
     
 }
+
